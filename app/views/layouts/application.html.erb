@@ -10,6 +10,21 @@
   </head>
 
   <body>
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
+    
+    <div>
+      <% if current_user %>
+        You have login as <strong><%= current_user.username %></strong>!
+        <%= link_to 'Logout', destroy_user_session_path, method: :delete %>
+      <% else %>
+        <%= link_to 'Sign in', new_user_session_path %>
+        <%= link_to "Sign in with Facebook", user_facebook_omniauth_authorize_path %>
+        <%= link_to "Sign in with GitHub", user_github_omniauth_authorize_path %>
+
+      <% end %>
+    </div>
+    
     <%= yield %>
   </body>
 </html>
