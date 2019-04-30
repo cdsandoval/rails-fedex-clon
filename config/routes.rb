@@ -1,11 +1,11 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
+
 
   root 'home#index'
   resources :shipment, only: [:show]
   get 'search', to: 'shipment#show'
-
-  devise_for :users
 
   namespace :deposit do
     root 'home#index'

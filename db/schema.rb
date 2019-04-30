@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_29_225354) do
+ActiveRecord::Schema.define(version: 2019_04_30_172053) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "providers", force: :cascade do |t|
+    t.string "name"
+    t.string "uid"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_providers_on_user_id"
+  end
 
   create_table "senders", force: :cascade do |t|
     t.string "store_name"
@@ -54,9 +63,9 @@ ActiveRecord::Schema.define(version: 2019_04_29_225354) do
     t.string "username", default: "", null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
-    t.string "city", default: "Lima", null: false
-    t.string "country", default: "Peru", null: false
-    t.string "address", default: "Miraflores", null: false
+    t.string "city", null: false
+    t.string "country", null: false
+    t.string "address", null: false
     t.string "role", default: "regular", null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -67,6 +76,7 @@ ActiveRecord::Schema.define(version: 2019_04_29_225354) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "providers", "users"
   add_foreign_key "shipment_locations", "shipments"
   add_foreign_key "shipments", "senders"
   add_foreign_key "shipments", "users"
