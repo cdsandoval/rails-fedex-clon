@@ -1,1 +1,13 @@
 <h1>Shipment show view</h1>
+
+<li><%= @shipment.tracking_id %></li>
+<li><%= @shipment.origin_adress %></li>
+<li><%= @shipment.destination_address %></li>
+<li><%= @shipment.weight %></li>
+<li><%= @shipment.reception_date %></li>
+<li><%= @shipment.estimated_delivery_date %></li>
+<li><%= @shipment.delivered_date %></li>
+<li><%= @shipment.freight_value %></li>
+<li><%= @shipment.user.username %></li>
+<li><%= @shipment.sender.store_name %></li>
+
