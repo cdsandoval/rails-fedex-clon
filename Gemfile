@@ -66,3 +66,4 @@ gem "faker"
 gem 'dotenv-rails', groups: [:development, :test]
 gem 'omniauth-facebook'
 gem 'omniauth-github'
+gem "pundit"

@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 2019_04_30_172053) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["sender_id"], name: "index_shipments_on_sender_id"
+    t.index ["tracking_id"], name: "index_shipments_on_tracking_id", unique: true
     t.index ["user_id"], name: "index_shipments_on_user_id"
   end
 
@@ -63,9 +64,9 @@ ActiveRecord::Schema.define(version: 2019_04_30_172053) do
     t.string "username", default: "", null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
-    t.string "city", null: false
-    t.string "country", null: false
-    t.string "address", null: false
+    t.string "city", default: "Lima", null: false
+    t.string "country", default: "Peru", null: false
+    t.string "address", default: "Miraflores", null: false
     t.string "role", default: "regular", null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"

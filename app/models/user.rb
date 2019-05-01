@@ -11,8 +11,6 @@ class User < ApplicationRecord
 
   devise :omniauthable, omniauth_providers: %i[facebook github]
 
-
-
   def self.from_omniauth(auth)
     where(email: auth.info.email).first_or_create do |user|
       user.email = auth.info.email
@@ -24,4 +22,16 @@ class User < ApplicationRecord
     end
   end
 
+  def regular?
+    self.role == "regular"
+  end
+
+  def admin?
+    self.role == "admin"
+  end
+
+  def sales?
+    self.role == "sales"
+  end
+  
 end

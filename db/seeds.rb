@@ -1,16 +1,16 @@
 require "faker"
 con = 1
 5.times do
-  Sender.create ([{
+  Sender.create(
   store_name: Faker::Commerce.department,
   email: Faker::Internet.email,
   order_id: con 
-  }])
+  )
   con += 1
 end
 
 5.times do
-  User.create ([{
+  User.create(
     username: Faker::Name.unique.name,       
     email: Faker::Internet.email,          
     password: "123456",
@@ -18,10 +18,10 @@ end
     country: Faker::Address.country,
     address: Faker::Address.street_address,  
     role: "regular"       
-  }])
+  )
 end
 5.times do
-  Shipment.create ([{
+  Shipment.create(
     tracking_id: Faker::Alphanumeric.alphanumeric(10),
     origin_adress: Faker::Address.full_address, 
     destination_address: Faker::Address.full_address, 
@@ -31,13 +31,52 @@ end
     freight_value: Faker::Number.between(20 ,100),
     user_id: User.all.reduce([]){ |array, val| array << val.id }.sample,
     sender_id: Sender.all.reduce([]){ |array, val| array << val.id }.sample
-  }])
+  )
 end
 5.times do 
-  ShipmentLocation.create ([{
+  ShipmentLocation.create(
     city: Faker::Address.city,
     country: Faker::Address.country,
     reception_date:Faker::Date.forward(20),
     shipment_id: Shipment.all.reduce([]){ |array, val| array << val.id }.sample,
-  }])
+  )
 end
+
+User.create(
+  username: "Paul",       
+  email: "yummta+regular@gmail.com",          
+  password: "123456",
+  city: "Lima",     
+  country: "Peru",
+  address: "Miraflores",  
+  role: "regular"       
+)
+
+User.create(
+  username: "Paul",       
+  email: "yummta+admin@gmail.com",          
+  password: "123456",
+  city: "Lima",     
+  country: "Peru",
+  address: "Miraflores",  
+  role: "admin"       
+)
+
+User.create(
+  username: "Paul",       
+  email: "yummta+sales@gmail.com",          
+  password: "123456",
+  city: "Lima",     
+  country: "Peru",
+  address: "Miraflores",  
+  role: "sales"       
+)
+User.create(
+  username: "Paul",       
+  email: "yummta+deposit@gmail.com",          
+  password: "123456",
+  city: "NY",     
+  country: "US",
+  address: "Madisson",  
+  role: "deposit"       
+)
