@@ -15,11 +15,21 @@ class User < ApplicationRecord
     where(email: auth.info.email).first_or_create do |user|
       user.email = auth.info.email
       user.password = Devise.friendly_token[0, 20]
+      user.authentication_token = Devise.friendly_token[0, 30]
       user.username = auth.info.email.split("@")[0]
       user.country = "Peru"
       user.city = "Lima"
       user.address = "Calle Jorge Chavez 184"
     end
+  end
+
+  def invalidate_token
+    update(token: nil)
+  end
+
+  def self.valid_login?(email, password)
+    user = find_by(email: email)
+    user if user&.valid_password?(password)
   end
 
   def regular?
@@ -33,5 +43,5 @@ class User < ApplicationRecord
   def sales?
     self.role == "sales"
   end
-  
+
 end

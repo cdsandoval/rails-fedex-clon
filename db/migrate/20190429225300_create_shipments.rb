@@ -2,7 +2,7 @@ class CreateShipments < ActiveRecord::Migration[5.2]
   def change
     create_table :shipments do |t|
       t.string :tracking_id
-      t.string :origin_adress
+      t.string :origin_address
       t.string :destination_address
       t.integer :weight
       t.date :reception_date

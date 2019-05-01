@@ -62,8 +62,9 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'rspec-rails'
 gem 'devise'
-gem "faker"
+gem 'faker'
 gem 'dotenv-rails', groups: [:development, :test]
 gem 'omniauth-facebook'
 gem 'omniauth-github'
-gem "pundit"
+gem 'pundit'
+gem 'simple_token_authentication'

@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
   
-  #skip_before_action :authentication, :authorization
+  skip_before_action :authentication
 
   def index
   end

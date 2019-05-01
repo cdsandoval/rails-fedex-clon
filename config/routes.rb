@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
 
   root 'home#index'
-  resources :shipment, only: [:show]
+  resources :shipments, only: [:show]
   get 'search', to: 'shipment#show'
 
   namespace :deposit do
@@ -17,6 +17,8 @@ Rails.application.routes.draw do
   end
 
   namespace :api do
+    get "/login", to: "sessions#create"
+    resources :shipments, only: [:index]
   end
 
 end
