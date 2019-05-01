@@ -10,9 +10,13 @@
   </head>
 
   <body>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
-    
+    <% if flash[:alert] %>
+      <p class="flash-notice"><%= alert %></p>
+    <% end %>
+    <% if flash[:notice] %>
+     <p class="flash-notice"><%= notice %></p>
+    <% end %>
+
     <div>
       <% if current_user %>
         You have login as <strong><%= current_user.username %></strong>!
