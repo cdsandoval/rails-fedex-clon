@@ -2,17 +2,29 @@ module Admin
   
   class ShipmentsController < ApplicationController
 
-    def edit
-      @shipment = Shipment.find(params[:id])
+    def new
+    end
+
+    def delivered
+      @shipment = Shipment.find_by_tracking_id(params[:tracking_id])
+
+      unless @shipment
+        flash[:notice] = "The shipment doesn't exist"
+        redirect_to(admin_root_path)
+      else
+        render :delivered
+      end
     end
 
     def update
       shipment = Shipment.find(params[:id])
       if shipment.update(shipment_params)
         ShipmentMailer.with(shipment: shipment).shipment_delivered.deliver_now
-        redirect_to(root_path)
+        flash[:notice] = "Shipment marked as delivered successfuly"
+        redirect_to(admin_root_path)
       else
-        render :edit
+        flash[:notice] = "The shipment doesn't exist"
+        render :delivered
       end
     end
 

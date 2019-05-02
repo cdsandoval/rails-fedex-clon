@@ -15,7 +15,9 @@ Rails.application.routes.draw do
   namespace :admin do
     root 'home#index'
     get  'sales', to: 'sales#report'
-    resources :shipments, only: [:edit, :update]
+    get 'mark_delivered', to: 'shipments#delivered'
+    resources :shipments, only: [:update, :new, :create]
+    resources :users, only: [:new, :create]
   end
 
   namespace :api do
