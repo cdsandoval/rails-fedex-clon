@@ -62,8 +62,7 @@ User.create(
   city: "Lima",     
   country: "Peru",
   address: "Miraflores",  
-  role: "admin",
-  authentication_token: Devise.friendly_token[0, 30]     
+  role: "admin"
 )
 
 User.create(
@@ -114,3 +113,4 @@ Shipment.create(
   user_id: usermailer.id,
   sender_id: sendermailer.id
 )
+p "Seed complete"
