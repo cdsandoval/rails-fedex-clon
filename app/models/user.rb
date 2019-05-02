@@ -3,6 +3,9 @@ class User < ApplicationRecord
   has_many :providers
 
   validates :address, :city, :country, presence: true
+  validates :name, presence: true
+  EMAIL_FORMAT = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+  validates :email, presence: true, format: { with: EMAIL_FORMAT }, uniqueness: true
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
