@@ -3,6 +3,16 @@ module Admin
   class ShipmentsController < ApplicationController
 
     def new
+      @shipment = Shipment.new
+    end
+
+    def create
+      @shipment = Shipment.new(new_shipment_params)
+      if @shipment.save
+        redirect_to shipment_path(@shipment), notice: 'Shipment was successfully created.'
+      else
+        render :new
+      end
     end
 
     def delivered
@@ -31,6 +41,10 @@ module Admin
     private
     def shipment_params
       params.require(:shipment).permit(:delivered_date)
+    end
+
+    def new_shipment_params
+      params.require(:shipment).permit(:tracking_id, :origin_address, :destination_address, :weight, :reception_date, :estimated_delivery_date, :freight_value, :user_id, :sender_id)
     end
 
   end
