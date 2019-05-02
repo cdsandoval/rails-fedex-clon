@@ -65,53 +65,53 @@ RSpec.describe Api::ShipmentsController, type: :controller do
     end
 
     it 'returns http status bad request
-        when you pass token but you do not pass parameter tracking_number' do
+        when you pass token but you do not pass parameter tracking_id' do
       request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
       get :search
       expect(response).to have_http_status(:bad_request)
     end
 
     it 'render json with a specify error message
-        when you pass token but you do not pass parameter tracking_number' do
+        when you pass token but you do not pass parameter tracking_id' do
       request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
       get :search
       expected_response = JSON.parse(response.body)
-      expect(expected_response["errors"]["message"]).to eq("You have to pass the argument 'tracking_number'")
+      expect(expected_response["errors"]["message"]).to eq("You have to pass the argument 'tracking_id'")
     end
 
     it 'returns http status not found
-        when you pass token and tracking_number but the last one do not exist' do
+        when you pass token and tracking_id but the last one do not exist' do
       request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
-      get :search, params: { tracking_number: "asdas78686" }
+      get :search, params: { tracking_id: "asdas78686" }
       expect(response).to have_http_status(:not_found)
     end
 
     it 'render json with a specify error message
-        when you pass token and tracking_number but the last one do not exist' do
+        when you pass token and tracking_id but the last one do not exist' do
       request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
-      get :search, params: { tracking_number: "asdas78686" }
+      get :search, params: { tracking_id: "asdas78686" }
       expected_response = JSON.parse(response.body)
-      expect(expected_response["errors"]["message"]).to eq("It doesn't exists a shipment with that tracking number")
+      expect(expected_response["errors"]["message"]).to eq("It doesn't exists a shipment with that tracking id")
     end
 
     it 'returns http status ok' do
       request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
-      get :search, params: { tracking_number: @shipment1.tracking_id }
+      get :search, params: { tracking_id: @shipment1.tracking_id }
       expect(response).to have_http_status(:ok)
     end
 
     it 'render json with general attributes
-        when you pass a tracking_number but it does not belong you' do
+        when you pass a tracking_id but it does not belong you' do
       request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
-      get :search, params: { tracking_number: @shipment2.tracking_id }
+      get :search, params: { tracking_id: @shipment2.tracking_id }
       expected_response = JSON.parse(response.body)
       expect(expected_response.keys).not_to include("recipient")
     end
 
     it 'render json with general and private attributes 
-        when you pass a tracking_number and it belongs you' do
+        when you pass a tracking_id and it belongs you' do
       request.headers['Authorization'] = "Token token=#{@user2.authentication_token}"
-      get :search, params: { tracking_number: @shipment2.tracking_id }
+      get :search, params: { tracking_id: @shipment2.tracking_id }
       expected_response = JSON.parse(response.body)
       expect(expected_response.keys).to include("recipient")
     end
