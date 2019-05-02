@@ -1,5 +1,5 @@
 class ShipmentsController < ApplicationController
-  
+
   def search
     @shipment = Shipment.find_by_tracking_id(params[:tracking_id])
 
