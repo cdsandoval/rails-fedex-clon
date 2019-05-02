@@ -44,4 +44,8 @@ class User < ApplicationRecord
     self.role == "sales"
   end
 
+  def deposit?
+    self.role == "deposit"
+  end
+  
 end

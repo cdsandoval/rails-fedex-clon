@@ -7,6 +7,7 @@ module Deposit
     end
 
     def index
+      authorize User, policy_class: DepositPolicy
     end
 
     
