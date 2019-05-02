@@ -1,0 +1,11 @@
+<h1>Mark shipment as delivered</h1>
+
+<%= form_for [:admin, @shipment] do |f| %>
+  <p>
+    <%= f.label :delivered_date %><br />
+    <%= f.text_field :delivered_date %>
+  </p>
+  <p>
+    <%= f.submit %>
+  </p>
+<% end %>

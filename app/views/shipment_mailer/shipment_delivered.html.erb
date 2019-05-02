@@ -1,0 +1,16 @@
+<h1>Hi</h1>
+<p>
+  The following shipment has been delivered:
+  <dl>
+    <dt>Tracking ID</dt>
+    <dd><%= @shipment.tracking_id %></dd>
+    <dt>Sender</dt>
+    <dd><%= @sender.store_name %></dd>
+    <dt>Recipient</dt>
+    <dd><%= @recipient.username %></dd>
+    <dt>Delivered Date</dt>
+    <dd><%= @shipment.delivered_date %></dd>
+  </dl>
+</p>
+
+<p>Have a great day!</p>

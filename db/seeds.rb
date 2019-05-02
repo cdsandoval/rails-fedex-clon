@@ -60,7 +60,8 @@ User.create(
   city: "Lima",     
   country: "Peru",
   address: "Miraflores",  
-  role: "admin"       
+  role: "admin",
+  authentication_token: Devise.friendly_token[0, 30]     
 )
 
 User.create(
@@ -80,4 +81,32 @@ User.create(
   country: "US",
   address: "Madisson",  
   role: "deposit"       
+)
+
+sendermailer = Sender.create(
+  store_name: "Tienda prueba mailer",
+  email: "diegotc86@gmail.com",
+  order_id: 1000
+)
+
+usermailer = User.create(
+  username: "Diego",       
+  email: "diegotc86@gmail.com",          
+  password: "123456",
+  city: "Lima",     
+  country: "Peru",
+  address: "Direccion",  
+  role: "regular"       
+)
+
+Shipment.create(
+  tracking_id: "mailer1234",
+  origin_address: "Direccion origen", 
+  destination_address: "Direccion destino", 
+  weight: 100,
+  reception_date: Faker::Date.forward(60),
+  estimated_delivery_date: Faker::Date.forward(60),
+  freight_value: 200,
+  user_id: usermailer.id,
+  sender_id: sendermailer.id
 )

@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   namespace :admin do
     root 'home#index'
     get  'sales', to: 'sales#report'
+    resources :shipments, only: [:edit, :update]
   end
 
   namespace :api do
