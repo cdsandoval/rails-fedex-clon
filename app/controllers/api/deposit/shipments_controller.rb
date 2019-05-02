@@ -1,4 +1,4 @@
-class Api::ShipmentsController < ApiController
+class Api::Deposit::ShipmentsController < ApiController
 
   def index
     
