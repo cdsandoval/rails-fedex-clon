@@ -24,7 +24,9 @@ Rails.application.routes.draw do
     get "sales/report_packages_sents", to: 'sales#report_top5_packages_sent'
     get "sales/report_freight_sents", to: 'sales#report_ranked_freight_value'
     get 'mark_delivered', to: 'shipments#delivered'
-    resources :shipments, only: [:update, :new, :create]
+    resources :shipments, only: [:new, :create, :update] do
+      get 'search', action: 'search', on: :collection
+    end
     resources :users, only: [:new, :create]
   end
 
@@ -43,6 +45,14 @@ Rails.application.routes.draw do
       resources :shipment_locations, only: [:create] do
         get 'history', action: 'history', on: :collection
       end
+    end
+
+    namespace :admin do
+      get  'sales', to: 'sales#report'
+      resources :shipments, only: [:new, :create, :update] do
+        get 'search', action: 'search', on: :collection
+      end
+      resources :users, only: [:new, :create]
     end
     
   end

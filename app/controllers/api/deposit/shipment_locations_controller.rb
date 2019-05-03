@@ -7,10 +7,10 @@ class Api::Deposit::ShipmentLocationsController < ApiController
       if shipment_history.count > 0
         render json: shipment_history
       else
-        render_error_message("It doesn't exist a shipment location with that shipment_id", :not_found)
+        render_error_message("It doesn't exist a shipment location with that shipment_id", 404)
       end
     else
-      render_error_message("You have to pass the argument 'shipment_id'", :bad_request)
+      render_error_message("You have to pass the argument 'shipment_id'", 400)
     end
   end
 
@@ -28,7 +28,7 @@ class Api::Deposit::ShipmentLocationsController < ApiController
         render_error_message("The shipment is already stored in this location", :forbidden)
       end
     else
-      render_error_message("You have to pass the argument 'tracking_id'", :bad_request)
+      render_error_message("You have to pass the argument 'tracking_id'", 400)
     end
   end
 end

@@ -3,6 +3,17 @@ module Admin
   class ShipmentsController < ApplicationController
 
     before_action :authorization_admin
+    
+    def search
+      @shipment = Shipment.find_by_tracking_id(params[:tracking_id])
+
+      unless @shipment
+        flash[:notice] = "The shipment doesn't exist"
+        redirect_to(admin_root_path)
+      else
+        render :search
+      end
+    end
 
     def new
       @shipment = Shipment.new
@@ -14,17 +25,6 @@ module Admin
         redirect_to admin_mark_delivered_path(tracking_id: @shipment.tracking_id), notice: 'Shipment was successfully created.'
       else
         render :new
-      end
-    end
-
-    def delivered
-      @shipment = Shipment.find_by_tracking_id(params[:tracking_id])
-
-      unless @shipment
-        flash[:notice] = "The shipment doesn't exist"
-        redirect_to(admin_root_path)
-      else
-        render :delivered
       end
     end
 
@@ -41,6 +41,7 @@ module Admin
     end
 
     private
+    
     def shipment_params
       params.require(:shipment).permit(:delivered_date)
     end
