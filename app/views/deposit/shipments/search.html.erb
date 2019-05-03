@@ -1,26 +1,19 @@
-<h1>Shipment details</h1>
+<h1><%= current_user.country %> <%= current_user.city %> Deposit</h1>
 
-<li><%= @shipment.tracking_id %></li>
-<li><%= @shipment.origin_address %></li>
-<li><%= @shipment.destination_address %></li>
-<li><%= @shipment.weight %></li>
-<li><%= @shipment.reception_date %></li>
-<li><%= @shipment.estimated_delivery_date %></li>
-<li><%= @shipment.delivered_date %></li>
-<li><%= @shipment.freight_value %></li>
-<li><%= @shipment.user.username %></li>
-<li><%= @shipment.sender.store_name %></li>
+<% unless @shipment.validate_stored?(current_user) %>
+  <%= form_tag(deposit_shipment_locations_path) do %>
+    <%= hidden_field_tag 'tracking_id', @shipment.tracking_id %>
+    <%= submit_tag 'Store' %>
+  <% end %>
+<% else %>
+  <pre>Stored</pre>
+<% end %>
 
-<ul><% @shipment.shipment_locations.each do |location|%>
+<h2>Deposit history</h2>
+<ul>
+<% @shipment.shipment_locations.each do |location|%>
   <li>Received on <%= location.reception_date%> in <%= location.city%>, <%= location.country%></li>
 <% end %>
 </ul>
 
-<br/>
-<% unless @shipment.validate_stored?(current_user)%>
-<%= form_tag(deposit_shipment_locations_path) do %>
-  <%= hidden_field_tag 'tracking_id', @shipment.tracking_id%>
-  <%= submit_tag 'Check' %>
-<% end %>
-
-<% end %>
+<%= render partial: "_partials/shipment" %>
