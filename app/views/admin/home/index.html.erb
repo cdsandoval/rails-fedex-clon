@@ -1,0 +1,12 @@
+<h1>Welcome to FedEx Clone Admin Panel</h1>
+
+<%= link_to "Add new shipment", new_admin_shipment_path %>
+<%= link_to "Add new user", new_admin_user_path %>
+<%= link_to "Go to Reports", admin_sales_path %>
+
+<h2>Find a shipment to mark as delivered</h2>
+
+<%= form_tag(admin_mark_delivered_path, {:method => "get"}) do %>
+ <%= text_field_tag 'tracking_id' %>
+ <%= submit_tag 'Search' %>
+<% end %>

@@ -1,0 +1,47 @@
+<h1> Create New shipment </h1>
+
+<%= form_for [:admin, @shipment] do |f| %>
+  <ul>
+    <% @shipment.errors.full_messages.each do |error| %>
+      <li><%= error %></li>
+    <% end %>
+  </ul>
+  <p>
+    <%= f.label :origin_address %><br />
+    <%= f.text_field :origin_address %>
+  </p>
+  <p>
+    <%= f.label :destination_address %><br />
+    <%= f.text_field :destination_address %>
+  </p>
+  <p>
+    <%= f.label :weight %><br />
+    <%= f.text_field :weight %>
+  </p>
+  <p>
+    <%= f.label :reception_date %><br />
+    <%= f.date_field :reception_date, value: Time.now.strftime("%Y-%m-%d") %>
+  </p>
+  <p>
+    <%= f.label :estimated_delivery_date %><br />
+    <%= f.date_field :estimated_delivery_date, value: (Time.now + 2592000).strftime("%Y-%m-%d") %>
+  </p>
+  <p>
+    <%= f.label :freight_value %><br />
+    <%= f.text_field :freight_value %>
+  </p>
+  <p>
+    <%= f.label :user_id %><br />
+    <%= f.text_field :user_id %>
+  </p>
+  <p>
+    <%= f.label :sender_id %><br />
+    <%= f.text_field :sender_id %>
+  </p>
+  <p>
+    <%= f.hidden_field :tracking_id, value: "T00#{rand(0..1000)}" %>
+  </p>
+  <p>
+    <%= f.submit %>
+  </p>
+<% end %>
