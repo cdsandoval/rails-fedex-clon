@@ -21,7 +21,7 @@ RSpec.describe Api::Admin::ShipmentsController, type: :controller do
       city: Faker::Address.city,
       country: Faker::Address.country,
       address: Faker::Address.street_address,
-      role: "regular",
+      role: "admin",
     )
     @user2 = User.create(
       username: Faker::Name.unique.name,
@@ -107,14 +107,6 @@ RSpec.describe Api::Admin::ShipmentsController, type: :controller do
       expected_response = JSON.parse(response.body)
       expect(expected_response.keys).not_to include("recipient")
     end
-
-    it 'render json with general and private attributes 
-        when you pass a tracking_id and it belongs you' do
-      request.headers['Authorization'] = "Token token=#{@user2.authentication_token}"
-      get :search, params: { tracking_id: @shipment2.tracking_id }
-      expected_response = JSON.parse(response.body)
-      expect(expected_response.keys).to include("recipient")
-    end
   end
 
   describe 'POST create' do
@@ -153,43 +145,234 @@ RSpec.describe Api::Admin::ShipmentsController, type: :controller do
       expect(response).to have_http_status(:bad_request)
     end
 
-    it 'render json with a specify error message
-        when you pass token but you do not pass parameter tracking_id' do
+    it 'render json with number of errors equal to all required parameters without value
+        when you pass token but you do not pass none of parameters' do
       request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
       post :create
       expected_response = JSON.parse(response.body)
-      expect(expected_response["errors"]["message"]).to eq("You have to pass the argument 'tracking_id'")
+      expect(expected_response["errors"]["message"].size).to eq(8)
     end
 
-    it 'returns http status ok' do
+    it 'render json with number of errors equal to all required parameters without value
+        when you pass token and parameter origin_address' do
       request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
-      post :create, params: { tracking_id: @shipment2.tracking_id }
+      post :create, params: { :origin_address => "Lurin 345", :format => :json }
+      expected_response = JSON.parse(response.body)
+      expect(expected_response["errors"]["message"].size).to eq(7)
+    end
+
+    it 'render json with number of errors equal to all required parameters without value
+        when you pass token and parameters
+        origin_address and destination_address' do
+      request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
+      post :create, params: { :origin_address => "Lurin 345",
+                              :destination_address => "Los Olivos Huandoy",
+                              :format => :json }
+      expected_response = JSON.parse(response.body)
+      expect(expected_response["errors"]["message"].size).to eq(6)
+    end
+
+    it 'render json with number of errors equal to all required parameters without value
+        when you pass token and parameters
+        origin_address, destination_address and weight
+        but the weight\'s value is not a number' do
+      request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
+      post :create, params: { :origin_address => "Lurin 345",
+                              :destination_address => "Los Olivos Huandoy",
+                              :weight => "prueba",
+                              :format => :json }
+      expected_response = JSON.parse(response.body)
+      expect(expected_response["errors"]["message"].size).to eq(6)
+    end
+
+    it 'render json with number of errors equal to all required parameters without value
+        when you pass token and parameters
+        origin_address, destination_address and weight,
+        and the weight\'s value is a number' do
+      request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
+      post :create, params: { :origin_address => "Lurin 345",
+                              :destination_address => "Los Olivos Huandoy",
+                              :weight => 34,
+                              :format => :json }
+      expected_response = JSON.parse(response.body)
+      expect(expected_response["errors"]["message"].size).to eq(5)
+    end
+
+    it 'render json with number of errors equal to all required parameters without value
+        when you pass token and parameters
+        origin_address, destination_address, weight and estimated_delivery_date
+        but the estimated_delivery_date\'s value is not a date' do
+      request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
+      post :create, params: { :origin_address => "Lurin 345",
+                              :destination_address => "Los Olivos Huandoy",
+                              :weight => 34,
+                              :estimated_delivery_date => "asdasd",
+                              :format => :json }
+      expected_response = JSON.parse(response.body)
+      expect(expected_response["errors"]["message"].size).to eq(5)
+    end
+
+    it 'render json with number of errors equal to all required parameters without value
+        when you pass token and parameters
+        origin_address, destination_address, weight and estimated_delivery_date,
+        and the estimated_delivery_date\'s value is a date' do
+      request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
+      post :create, params: { :origin_address => "Lurin 345",
+                              :destination_address => "Los Olivos Huandoy",
+                              :weight => 34,
+                              :estimated_delivery_date => "12/05/2019",
+                              :format => :json }
+      expected_response = JSON.parse(response.body)
+      expect(expected_response["errors"]["message"].size).to eq(4)
+    end
+    
+    it 'render json with number of errors equal to all required parameters without value
+        when you pass token and parameters
+        origin_address, destination_address, weight, estimated_delivery_date and reception_date
+        but the reception_date\'s value is not a date' do
+      request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
+      post :create, params: { :origin_address => "Lurin 345",
+                              :destination_address => "Los Olivos Huandoy",
+                              :weight => 34,
+                              :estimated_delivery_date => "12/05/2019",
+                              :reception_date => "asdasd",
+                              :format => :json }
+      expected_response = JSON.parse(response.body)
+      expect(expected_response["errors"]["message"].size).to eq(4)
+    end
+
+    it 'render json with number of errors equal to all required parameters without value
+        when you pass token and parameters
+        origin_address, destination_address, weight, estimated_delivery_date and reception_date
+        and the reception_date\'s value is a date' do
+      request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
+      post :create, params: { :origin_address => "Lurin 345",
+                              :destination_address => "Los Olivos Huandoy",
+                              :weight => 34,
+                              :estimated_delivery_date => "12/05/2019",
+                              :reception_date => "12/05/2019",
+                              :format => :json }
+      expected_response = JSON.parse(response.body)
+      expect(expected_response["errors"]["message"].size).to eq(3)
+    end
+
+    it 'render json with number of errors equal to all required parameters without value
+        when you pass token and parameters
+        origin_address, destination_address, weight, estimated_delivery_date, reception_date, freight_value
+        but the freight_value\'s value is not a number' do
+      request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
+      post :create, params: { :origin_address => "Lurin 345",
+                              :destination_address => "Los Olivos Huandoy",
+                              :weight => 34,
+                              :estimated_delivery_date => "12/05/2019",
+                              :reception_date => "12/05/2019",
+                              :freight_value => "sadasd",
+                              :format => :json }
+      expected_response = JSON.parse(response.body)
+      expect(expected_response["errors"]["message"].size).to eq(3)
+    end
+
+    it 'render json with number of errors equal to all required parameters without value
+        when you pass token and parameters
+        origin_address, destination_address, weight, estimated_delivery_date and reception_date, freight_value
+        and the freight_value\'s value is a number' do
+      request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
+      post :create, params: { :origin_address => "Lurin 345",
+                              :destination_address => "Los Olivos Huandoy",
+                              :weight => 34,
+                              :estimated_delivery_date => "12/05/2019",
+                              :reception_date => "12/05/2019",
+                              :freight_value => 365,
+                              :format => :json }
+      expected_response = JSON.parse(response.body)
+      expect(expected_response["errors"]["message"].size).to eq(2)
+    end
+
+    it 'render json with number of errors equal to all required parameters without value
+        when you pass token and  all parameters less sender_id
+        but the user_id\'s value doesn\'t exist' do
+      request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
+      post :create, params: { :origin_address => "Lurin 345",
+                              :destination_address => "Los Olivos Huandoy",
+                              :weight => 34,
+                              :estimated_delivery_date => "12/05/2019",
+                              :reception_date => "12/05/2019",
+                              :freight_value => 365,
+                              :user_id => "sadasd",
+                              :format => :json }
+      expected_response = JSON.parse(response.body)
+      expect(expected_response["errors"]["message"].size).to eq(2)
+    end
+
+    it 'render json with number of errors equal to all required parameters without value
+        when you pass token and  all parameters less sender_id
+        and the user_id\'s value exists' do
+      request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
+      post :create, params: { :origin_address => "Lurin 345",
+                              :destination_address => "Los Olivos Huandoy",
+                              :weight => 34,
+                              :estimated_delivery_date => "12/05/2019",
+                              :reception_date => "12/05/2019",
+                              :freight_value => 365,
+                              :user_id => @user1.id,
+                              :format => :json }
+      expected_response = JSON.parse(response.body)
+      expect(expected_response["errors"]["message"].size).to eq(1)
+    end
+
+    it 'render json with number of errors equal to all required parameters without value
+        when you pass token and  all parameters
+        but the sender_id\'s value doesn\'t exist' do
+      request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
+      post :create, params: { :origin_address => "Lurin 345",
+                              :destination_address => "Los Olivos Huandoy",
+                              :weight => 34,
+                              :estimated_delivery_date => "12/05/2019",
+                              :reception_date => "12/05/2019",
+                              :freight_value => 365,
+                              :user_id => @user1.id,
+                              :sender_id => "sdasd",
+                              :format => :json }
+      expected_response = JSON.parse(response.body)
+      expect(expected_response["errors"]["message"].size).to eq(1)
+    end
+
+    it 'returns http status created
+        when you pass token and  all parameters and all have correct values' do
+      request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
+      post :create, params: { :origin_address => "Lurin 345",
+                              :destination_address => "Los Olivos Huandoy",
+                              :weight => 34,
+                              :estimated_delivery_date => "12/05/2019",
+                              :reception_date => "12/05/2019",
+                              :freight_value => 365,
+                              :user_id => @user1.id,
+                              :sender_id => Sender.all.first.id,
+                              :format => :json }
       expect(response).to have_http_status(:created)
     end
 
-    it 'render json
-        with shipment_id attribute equal to shipment whose tracking_id is passed as parameter' do
+    it 'returns http status created
+        when you pass token and  all parameters and all have correct values' do
       request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
-      post :create, params: { tracking_id: @shipment2.tracking_id }
+      post :create, params: { :origin_address => "Lurin 345",
+                              :destination_address => "Los Olivos Huandoy",
+                              :weight => 34,
+                              :estimated_delivery_date => "12/05/2019",
+                              :reception_date => "12/05/2019",
+                              :freight_value => 365,
+                              :user_id => @user2.id,
+                              :sender_id => Sender.all.first.id,
+                              :format => :json }
       expected_response = JSON.parse(response.body)
-      expect(expected_response["shipment_id"]).to eq(@shipment2.id)
-    end
-
-    it 'returns http status forbidden
-        when you send a post action twice in row' do
-      request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
-      post :create, params: { tracking_id: @shipment2.tracking_id }
-      post :create, params: { tracking_id: @shipment2.tracking_id }
-      expect(response).to have_http_status(:forbidden)
-    end
-
-    it 'returns http status forbidden
-        when you send a post action twice in row' do
-      request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
-      post :create, params: { tracking_id: @shipment2.tracking_id }
-      post :create, params: { tracking_id: @shipment2.tracking_id }
-      expected_response = JSON.parse(response.body)
-      expect(expected_response["errors"]["message"]).to eq("You can't store this shipment twice in row right here")
+      expect(expected_response["origin_address"]).to eq("Lurin 345")
+      expect(expected_response["destination_address"]).to eq("Los Olivos Huandoy")
+      expect(expected_response["weight"]).to eq(34)
+      expect(expected_response["estimated_delivery_date"]).to eq("2019-05-12")
+      expect(expected_response["reception_date"]).to eq("2019-05-12")
+      expect(expected_response["freight_value"]).to eq(365)
+      expect(expected_response["user_id"]).to eq(@user2.id)
+      expect(expected_response["sender_id"]).to eq(Sender.all.first.id)
     end
   end
 

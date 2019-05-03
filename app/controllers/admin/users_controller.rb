@@ -1,13 +1,18 @@
 module Admin
   class UsersController < ApplicationController
 
-    before_action :authorization_admin
+    def index
+      authorize User, policy_class: AdminPolicy
+      @users = User.where.not(:id => current_user.id)
+    end
 
     def new
+      authorize User, policy_class: AdminPolicy
       @user = User.new
     end
 
     def create
+      authorize User, policy_class: AdminPolicy
       @user = User.new(user_params)
       if @user.save
         flash[:notice] = "Created User successfully" 
@@ -18,10 +23,12 @@ module Admin
     end
 
     def edit
+      authorize User, policy_class: AdminPolicy
       @user = User.find(params[:id])
     end
 
     def update
+      authorize User, policy_class: AdminPolicy
       @user = User.find(params[:id])
       params[:user].delete(:password) if params[:user][:password].blank?
 
@@ -34,6 +41,7 @@ module Admin
     end
 
     def destroy
+      authorize User, policy_class: AdminPolicy
       @user = User.find(params[:id])
       if @user.destroy
         flash[:notice] = "Successfully deleted User."
@@ -47,8 +55,5 @@ module Admin
       params.require(:user).permit(:username, :email, :password, :city, :country, :role)
     end
 
-    def authorization_admin
-      authorize User, :new?, policy_class: AdminPolicy
-    end
   end
 end

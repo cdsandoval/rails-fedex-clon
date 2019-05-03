@@ -1,6 +1,7 @@
 class Api::Admin::ShipmentsController < ApiController
 
   def search
+    authorize User, policy_class: AdminPolicy
     if params[:tracking_id]
       shipment = Shipment.find_by(tracking_id: params[:tracking_id])
       if shipment
@@ -14,15 +15,17 @@ class Api::Admin::ShipmentsController < ApiController
   end
 
   def create
+    authorize User, policy_class: AdminPolicy
     shipment = Shipment.new(new_shipment_params)
     if shipment.save
-      render_error_message("Shipment was successfully created", 201)
+      render json: shipment, status: 201
     else
       render_error_message(shipment.errors.full_messages, 400)
     end
   end
 
   def update
+    authorize User, policy_class: AdminPolicy
     if params[:id]
       shipment = Shipment.find(params[:id])
       if shipment.update(shipment_params)
@@ -38,11 +41,16 @@ class Api::Admin::ShipmentsController < ApiController
 
   private
     
-    def shipment_params
-      params.require(:shipment).permit(:delivered_date)
-    end
+  def shipment_params
+    params.require(:shipment).permit(:delivered_date)
+  end
 
-    def new_shipment_params
-      params.require(:shipment).permit(:tracking_id, :origin_address, :destination_address, :weight, :reception_date, :estimated_delivery_date, :freight_value, :user_id, :sender_id)
-    end
+  def new_shipment_params
+    params.permit(:origin_address, :destination_address, :weight, :reception_date, :estimated_delivery_date, :freight_value, :user_id, :sender_id)
+  end
+  
+  # rescue_from(ActionController::ParameterMissing) do |parameter_missing_exception|
+  #   render_error_message("Required parameter missing: #{parameter_missing_exception.param}", 400)
+  # end
+  
 end
