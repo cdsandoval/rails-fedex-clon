@@ -6,8 +6,6 @@ module Admin
 
     def new
       @shipment = Shipment.new
-      @users = User.all
-      @senders = Sender.all
     end
 
     def create
