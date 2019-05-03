@@ -5,9 +5,9 @@ class ApplicationController < ActionController::Base
 
   before_action :authentication, unless: :devise_controller?
   before_action :configure_permitted_parameters, if: :devise_controller?
- 
+
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-  
+
   def after_sign_in_path_for(current_user)
     if current_user.role == "admin"
       return admin_root_path
