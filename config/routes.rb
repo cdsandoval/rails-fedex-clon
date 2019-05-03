@@ -13,7 +13,7 @@ Rails.application.routes.draw do
       get 'search', action: 'search', on: :collection
     end
         
-    resources :shipments_location, only: [:create]
+    resources :shipment_locations, only: [:create]
   end
 
   namespace :admin do
@@ -32,7 +32,13 @@ Rails.application.routes.draw do
     end
 
     namespace :deposit do
-      get 'search', to: 'shipments#search'
+      resources :shipments, only: [:index] do
+        get 'search', action: 'search', on: :collection
+      end
+
+      resources :shipment_locations, only: [:create] do
+        get 'history', action: 'history', on: :collection
+      end
     end
     
   end

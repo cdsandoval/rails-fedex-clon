@@ -1,17 +1,17 @@
 class ApiController < ActionController::API
   include ActionController::HttpAuthentication::Token::ControllerMethods
+  include Pundit
 
   attr_accessor :current_user
 
   before_action :require_login
 
-  def require_login
-    authenticate_token || render_unauthorized('Access denied')
-  end
+  rescue_from Pundit::NotAuthorizedError, with: :render_unauthorized
 
-  def render_unauthorized(message)
-    errors = { errors: { message: message } }
-    render json: errors, status: :unauthorized
+  protected
+
+  def require_login
+    authenticate_token || render_unauthorized
   end
 
   def authenticate_token
@@ -19,4 +19,14 @@ class ApiController < ActionController::API
       @current_user = User.find_by(authentication_token: token)
     end
   end
+
+  def render_unauthorized
+    render_error_message('Access denied', 401)
+  end
+
+  def render_error_message(message, status)
+    errors = { errors: { message: message } }
+    render json: errors, status: status
+  end
+
 end

@@ -5,13 +5,17 @@ class DepositPolicy < ApplicationPolicy
   def initialize (user, deposit)
     @user = user
     @deposit = deposit
-  end  
+  end
 
   def index?
     user.deposit? || user.admin?
   end
 
   def search?
+    user.deposit? || user.admin?
+  end
+
+  def history?
     user.deposit? || user.admin?
   end
 

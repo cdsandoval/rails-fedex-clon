@@ -1,19 +1,16 @@
 class Api::Deposit::ShipmentsController < ApiController
 
-  def index
-    
-  end
-
   def search
-    if params[:tracking_number]
-      shipment = Shipment.find_by(tracking_id: params[:tracking_number])
+    authorize Shipment, policy_class: DepositPolicy
+    if params[:tracking_id]
+      shipment = Shipment.find_by(tracking_id: params[:tracking_id])
       if shipment
         render json: shipment
       else
-        render json: {errors: {message: "It doesn't exists a shipment with that tracking number" } }, status: 404
+        render_error_message("It doesn't exists a shipment with that tracking id", 404)
       end
     else
-      render json: {errors: {message: "You have to pass the argument 'tracking_number'" } }, status: 400
+      render_error_message("You have to pass the argument 'tracking_id'", 400)
     end
   end
 end

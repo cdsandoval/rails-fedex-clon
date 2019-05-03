@@ -6,7 +6,6 @@ class SalesPolicy < ApplicationPolicy
     @user = user
     @sales = sales
   end
-  
 
   def report?
     user.admin? || user.sales?
