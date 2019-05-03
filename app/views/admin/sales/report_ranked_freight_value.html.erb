@@ -1,0 +1,7 @@
+<h1>top senders by freight value</h1>
+
+<ul>
+  <% @senders.each do |sender| %>
+    <li><%= sender.store_name %></li> 
+  <% end %>
+</ul>
