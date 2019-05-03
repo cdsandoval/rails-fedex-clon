@@ -4,7 +4,9 @@ con = 1
   Sender.create(
   store_name: Faker::Commerce.department,
   email: Faker::Internet.email,
-  order_id: con 
+  order_id: con,
+  city: Faker::Address.city,        
+  country: Faker::Address.country,
   )
   con += 1
 end
@@ -89,7 +91,9 @@ User.create(
 sendermailer = Sender.create(
   store_name: "Tienda prueba mailer",
   email: "diegotc86@gmail.com",
-  order_id: 1000
+  order_id: 1000,
+  city: "Lima",        
+  country: "Peru",
 )
 
 usermailer = User.create(

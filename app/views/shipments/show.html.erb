@@ -46,7 +46,7 @@
     <td><%= @shipment.sender.store_name %></td>
   </tr>
 
-  <% if current_user.email == @shipment.user.email %>
+  <% if current_user && current_user.email == @shipment.user.email %>
     <tr>
       <td>Store_id:</td>
       <td><%= @shipment.sender.id %></td>
