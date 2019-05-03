@@ -32,14 +32,11 @@
   </p>
   <p>
     <%= f.label :user_id %><br />
-    <%= f.text_field :user_id %>
+    <%= f.select :user_id, User.where(role: "regular").collect {|u| [ u.email, u.id ] } %>
   </p>
   <p>
     <%= f.label :sender_id %><br />
-    <%= f.text_field :sender_id %>
-  </p>
-  <p>
-    <%= f.hidden_field :tracking_id, value: "T00#{rand(0..1000)}" %>
+    <%= f.select :sender_id, Sender.all.collect {|s| [ s.email, s.id ] } %>
   </p>
   <p>
     <%= f.submit %>
