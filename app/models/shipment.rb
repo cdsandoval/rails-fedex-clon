@@ -16,7 +16,7 @@ class Shipment < ApplicationRecord
   end
 
   def generate_tracking_id
-    self.tracking_id = "T#{DateTime.now.to_i}"
+    self.tracking_id = "T#{DateTime.now.to_i}" unless self.tracking_id
   end
 
 end
