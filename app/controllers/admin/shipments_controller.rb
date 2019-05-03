@@ -2,6 +2,8 @@ module Admin
   
   class ShipmentsController < ApplicationController
 
+    before_action :authorization_admin
+
     def new
       @shipment = Shipment.new
     end
@@ -27,6 +29,7 @@ module Admin
     end
 
     def update
+      
       shipment = Shipment.find(params[:id])
       if shipment.update(shipment_params)
         ShipmentMailer.with(shipment: shipment).shipment_delivered.deliver_now
@@ -45,6 +48,10 @@ module Admin
 
     def new_shipment_params
       params.require(:shipment).permit(:tracking_id, :origin_address, :destination_address, :weight, :reception_date, :estimated_delivery_date, :freight_value, :user_id, :sender_id)
+    end
+
+    def authorization_admin
+      authorize User, :new?, policy_class: AdminPolicy
     end
 
   end
