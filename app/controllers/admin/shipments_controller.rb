@@ -6,6 +6,8 @@ module Admin
 
     def new
       @shipment = Shipment.new
+      @users = User.all
+      @senders = Sender.all
     end
 
     def create
@@ -47,7 +49,7 @@ module Admin
     end
 
     def new_shipment_params
-      params.require(:shipment).permit(:tracking_id, :origin_address, :destination_address, :weight, :reception_date, :estimated_delivery_date, :freight_value, :user_id, :sender_id)
+      params.require(:shipment).permit(:origin_address, :destination_address, :weight, :reception_date, :estimated_delivery_date, :freight_value, :user_id, :sender_id)
     end
 
     def authorization_admin
