@@ -10,10 +10,10 @@ class Api::ShipmentsController < ApiController
       if shipment
         render json: shipment
       else
-        render json: {errors: {message: "It doesn't exists a shipment with that tracking id" } }, status: 404
+        render_error_message("It doesn't exists a shipment with that tracking id", 404)
       end
     else
-      render json: {errors: {message: "You have to pass the argument 'tracking_id'" } }, status: 400
+      render_error_message("You have to pass the argument 'tracking_id'", 400)
     end
   end
 end
