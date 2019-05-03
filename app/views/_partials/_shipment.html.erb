@@ -1,0 +1,80 @@
+<table border="1" style="border-collapse: collapse">
+  <tr>
+    <th colspan="2" style="text-align: left">Shipment</th>
+  </tr>
+  <tr>
+    <td>tracking_id:</td>
+    <td><%= @shipment.tracking_id %></td>
+  </tr>
+  <tr>
+    <td>origin_address:</td>
+    <td><%= @shipment.origin_address %></td>
+  </tr>
+  <tr>
+    <td>destination_address:</td>
+    <td><%= @shipment.destination_address %></td>
+  </tr>
+  <tr>
+    <td>weight:</td>
+    <td><%= @shipment.weight %></td>
+  </tr>
+  <tr>
+    <td>reception_date:</td>
+    <td><%= @shipment.reception_date %></td>
+  </tr>
+  <tr>
+    <td>estimated_delivery_date:</td>
+    <td><%= @shipment.estimated_delivery_date %></td>
+  </tr>
+  <% if @shipment.delivered_date %>
+    <tr>
+      <td>delivered_date:</td>
+      <td><%= @shipment.delivered_date %></td>
+    </tr>
+  <% end %>
+  <tr>
+    <th colspan="2" style="text-align: left">Sender</th>
+  </tr>
+  <tr>
+    <td>Store_name:</td>
+    <td><%= @shipment.sender.store_name %></td>
+  </tr>
+
+  <% if current_user && (current_user.email == @shipment.user.email || current_user.role == "admin") %>
+    <tr>
+      <td>freight_value:</td>
+      <td><%= @shipment.freight_value %></td>
+    </tr>
+    <tr>
+      <td>Store_id:</td>
+      <td><%= @shipment.sender.id %></td>
+    </tr>
+    <tr>
+      <td>Store_email:</td>
+      <td><%= @shipment.sender.email %></td>
+    </tr>
+    <tr>
+      <th colspan="2" style="text-align: left">Recipient</th>
+    </tr>
+    <tr>
+      <td>Username:</td>
+      <td><%= @shipment.user.username %></td>
+    </tr>
+    <tr>
+      <td>Email:</td>
+      <td><%= @shipment.user.email %></td>
+    </tr>
+    <tr>
+      <td>City:</td>
+      <td><%= @shipment.user.city %></td>
+    </tr>
+    <tr>
+      <td>Country:</td>
+      <td><%= @shipment.user.country %></td>
+    </tr>
+    <tr>
+      <td>Address:</td>
+      <td><%= @shipment.user.address %></td>
+    </tr>
+  <% end %>
+</table>
