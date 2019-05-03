@@ -12,4 +12,3 @@ class SalesPolicy < ApplicationPolicy
   end
   
 end
-
