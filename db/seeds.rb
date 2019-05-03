@@ -113,7 +113,7 @@ Shipment.create(
   weight: 100,
   reception_date: Faker::Date.forward(60),
   estimated_delivery_date: Faker::Date.forward(60),
-  freight_value: 200,
+  freight_value: 3000,
   user_id: usermailer.id,
   sender_id: sendermailer.id
 )
