@@ -3,7 +3,7 @@ class User < ApplicationRecord
   has_many :providers
 
   validates :address, :city, :country, presence: true
-  validates :name, presence: true
+  validates :username, presence: true
   EMAIL_FORMAT = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, presence: true, format: { with: EMAIL_FORMAT }, uniqueness: true
 

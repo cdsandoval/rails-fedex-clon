@@ -36,9 +36,6 @@ Rails.application.routes.draw do
     end
     
   end
-    get 'site/home'
 
-    resources :posts
-    resources :users
 end
 
