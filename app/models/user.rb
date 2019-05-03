@@ -14,6 +14,8 @@ class User < ApplicationRecord
 
   devise :omniauthable, omniauth_providers: %i[facebook github]
 
+  before_create :generate_token
+
   def self.from_omniauth(auth)
     where(email: auth.info.email).first_or_create do |user|
       user.email = auth.info.email
@@ -28,6 +30,10 @@ class User < ApplicationRecord
 
   def invalidate_token
     update(token: nil)
+  end
+
+  def generate_token
+    self.authentication_token = Devise.friendly_token[0,30] unless self.authentication_token
   end
 
   def self.valid_login?(email, password)
