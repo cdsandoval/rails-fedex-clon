@@ -1,8 +1,5 @@
 <h1>Welcome to FedEx Clone</h1>
-
 <h2>Find your shipment</h2>
-
-
 <%= form_tag(search_shipments_path, {:method => "get"}) do %>
  <%= text_field_tag 'tracking_id' %>
  <%= submit_tag 'Search' %>

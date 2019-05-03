@@ -11,15 +11,16 @@
 <li><%= @shipment.user.username %></li>
 <li><%= @shipment.sender.store_name %></li>
 
-
 <ul><% @shipment.shipment_locations.each do |location|%>
   <li>Received on <%= location.reception_date%> in <%= location.city%>, <%= location.country%></li>
 <% end %>
 </ul>
 
-
 <br/>
-<%= form_tag(deposit_create_path) do %>
+<% unless @shipment.validate_stored?(current_user)%>
+<%= form_tag(deposit_shipments_location_index_path) do %>
   <%= hidden_field_tag 'tracking_id', @shipment.tracking_id%>
   <%= submit_tag 'Check' %>
+<% end %>
+
 <% end %>

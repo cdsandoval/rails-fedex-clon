@@ -9,7 +9,11 @@ Rails.application.routes.draw do
 
   namespace :deposit do
     root 'home#index'
-    get 'search', to: 'shipments#show'
+    resources :shipments, only: [:index, :show] do
+      get 'search', action: 'search', on: :collection
+    end
+        
+    resources :shipments_location, only: [:create]
   end
 
   namespace :admin do
