@@ -18,7 +18,7 @@
 
 <br/>
 <% unless @shipment.validate_stored?(current_user)%>
-<%= form_tag(deposit_shipments_location_index_path) do %>
+<%= form_tag(deposit_shipment_locations_path) do %>
   <%= hidden_field_tag 'tracking_id', @shipment.tracking_id%>
   <%= submit_tag 'Check' %>
 <% end %>
