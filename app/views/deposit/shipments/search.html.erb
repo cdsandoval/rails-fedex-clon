@@ -16,4 +16,14 @@
 <% end %>
 </ul>
 
+<<<<<<< HEAD
 <%= render partial: "_partials/shipment" %>
+=======
+<br/>
+<% unless @shipment.validate_stored?(current_user)%>
+<%= form_tag(deposit_shipment_locations_path) do %>
+  <%= hidden_field_tag 'tracking_id', @shipment.tracking_id%>
+  <%= submit_tag 'Check' %>
+<%  end %>
+<% end %>
+>>>>>>> Add validate shipment when is delivered
