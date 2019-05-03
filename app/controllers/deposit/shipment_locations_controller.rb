@@ -1,6 +1,6 @@
 module Deposit
   
-  class ShipmentsLocationController < ApplicationController   
+  class ShipmentLocationsController < ApplicationController   
 
     def create
       authorize User, policy_class: DepositPolicy

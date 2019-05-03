@@ -1,5 +1,6 @@
 class ShipmentSerializer < ActiveModel::Serializer
-  attributes  :tracking_id,
+  attributes  :id,
+              :tracking_id,
               :origin_address,
               :destination_address,
               :weight,

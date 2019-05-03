@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'faker'
 
-RSpec.describe Api::ShipmentsController, type: :controller do
+RSpec.describe Api::Deposit::ShipmentsController, type: :controller do
 
   before do
     User.delete_all
@@ -21,7 +21,7 @@ RSpec.describe Api::ShipmentsController, type: :controller do
       city: Faker::Address.city,
       country: Faker::Address.country,
       address: Faker::Address.street_address,
-      role: "regular",
+      role: "deposit",
     )
     @user2 = User.create(
       username: Faker::Name.unique.name,
@@ -41,7 +41,7 @@ RSpec.describe Api::ShipmentsController, type: :controller do
       reception_date: Faker::Date.forward(60),
       estimated_delivery_date: Faker::Date.forward(60),
       freight_value: Faker::Number.between(20 ,100),
-      user_id: @user1.id,
+      user_id: @user2.id,
       sender_id: Sender.all.first.id
     )
     @shipment2 = Shipment.create(
@@ -62,6 +62,28 @@ RSpec.describe Api::ShipmentsController, type: :controller do
         when you do not pass the token in header' do
       get :search
       expect(response).to have_http_status(:unauthorized)
+    end
+
+    it 'render json with a specify error message
+        when you do not pass the token in header' do
+      get :search
+      expected_response = JSON.parse(response.body)
+      expect(expected_response["errors"]["message"]).to eq("Access denied")
+    end
+
+    it 'returns http status unathorized
+        when you pass the token of a user with role regular' do
+      request.headers['Authorization'] = "Token token=#{@user2.authentication_token}"
+      get :search
+      expect(response).to have_http_status(:unauthorized)
+    end
+
+    it 'render json with a specify error message
+        when you pass the token of a user with role regular' do
+      request.headers['Authorization'] = "Token token=#{@user2.authentication_token}"
+      get :search
+      expected_response = JSON.parse(response.body)
+      expect(expected_response["errors"]["message"]).to eq("Access denied")
     end
 
     it 'returns http status bad request
@@ -98,22 +120,6 @@ RSpec.describe Api::ShipmentsController, type: :controller do
       request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
       get :search, params: { tracking_id: @shipment1.tracking_id }
       expect(response).to have_http_status(:ok)
-    end
-
-    it 'render json with general attributes
-        when you pass a tracking_id but it does not belong you' do
-      request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
-      get :search, params: { tracking_id: @shipment2.tracking_id }
-      expected_response = JSON.parse(response.body)
-      expect(expected_response.keys).not_to include("recipient")
-    end
-
-    it 'render json with general and private attributes 
-        when you pass a tracking_id and it belongs you' do
-      request.headers['Authorization'] = "Token token=#{@user2.authentication_token}"
-      get :search, params: { tracking_id: @shipment2.tracking_id }
-      expected_response = JSON.parse(response.body)
-      expect(expected_response.keys).to include("recipient")
     end
   end
 
