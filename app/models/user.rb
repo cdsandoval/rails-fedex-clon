@@ -3,6 +3,9 @@ class User < ApplicationRecord
   has_many :providers
 
   validates :address, :city, :country, presence: true
+  validates :username, presence: true
+  EMAIL_FORMAT = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+  validates :email, presence: true, format: { with: EMAIL_FORMAT }, uniqueness: true
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -10,6 +13,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   devise :omniauthable, omniauth_providers: %i[facebook github]
+
+  before_create :generate_token
 
   def self.from_omniauth(auth)
     where(email: auth.info.email).first_or_create do |user|
@@ -25,6 +30,10 @@ class User < ApplicationRecord
 
   def invalidate_token
     update(token: nil)
+  end
+
+  def generate_token
+    self.authentication_token = Devise.friendly_token[0,30] unless self.authentication_token
   end
 
   def self.valid_login?(email, password)
