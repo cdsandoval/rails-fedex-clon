@@ -1,6 +1,8 @@
 module Admin
   class UsersController < ApplicationController
 
+    before_action :authorization_admin
+
     def index
       @users = User.where.not(:id => current_user.id)
     end
@@ -26,8 +28,7 @@ module Admin
     def update
       @user = User.find(params[:id])
       params[:user].delete(:password) if params[:user][:password].blank?
-      # params[:user].delete(:password_confirmation) if params[:user][:password].blank? and params[:user][:password_confirmation].blank?
-      
+
       if @user.update(user_params)
         flash[:notice] = "Successfully updated User."
         redirect_to admin_root_path
@@ -42,11 +43,16 @@ module Admin
         flash[:notice] = "Successfully deleted User."
         redirect_to admin_root_path
       end
-    end 
+    end
+
     private
 
     def user_params
       params.require(:user).permit(:username, :email, :password, :city, :country, :role)
+    end
+
+    def authorization_admin
+      authorize User, :new?, policy_class: AdminPolicy
     end
   end
 end
