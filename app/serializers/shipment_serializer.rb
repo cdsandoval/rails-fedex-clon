@@ -5,11 +5,18 @@ class ShipmentSerializer < ActiveModel::Serializer
               :destination_address,
               :weight,
               :estimated_delivery_date
+  attribute   :freight_value, if: :is_admin?
+  attribute   :user_id, if: :is_admin?
+  attribute   :sender_id, if: :is_admin?
   attribute   :reception_date, if: :reception_date_exists?
   attribute   :delivered_date, if: :delivered_date_exists?
   attribute   :sender, if: :belongs_to_recipient?
   attribute   :recipient, if: :belongs_to_recipient?
 
+
+  def is_admin?
+    current_user.admin?
+  end
 
   def reception_date_exists?
     object.reception_date != nil

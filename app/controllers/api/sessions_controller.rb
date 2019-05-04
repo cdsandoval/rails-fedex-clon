@@ -7,10 +7,10 @@ class Api::SessionsController < ApiController
       if user
         render json: { token: user.authentication_token }
       else
-        render_error_message('Incorrect email or password', :unauthorized)
+        render_error_message('Incorrect email or password', 401)
       end
     else
-      render_error_message("You have to pass the parameters 'email' and 'password'", :bad_request)
+      render_error_message("You have to pass the parameters 'email' and 'password'", 400)
     end
   end
 

@@ -1,11 +1,12 @@
 class User < ApplicationRecord
   has_many :shipments
   has_many :providers
-
-  validates :address, :city, :country, presence: true
-  validates :username, presence: true
+  
   EMAIL_FORMAT = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-  validates :email, presence: true, format: { with: EMAIL_FORMAT }, uniqueness: true
+  validates :username, :address, :city, :country, presence: true
+  validates :email, format: { with: EMAIL_FORMAT }, uniqueness: true
+  validates :role, inclusion: { in: [ "admin", "deposit", "sales", "regular" ],
+                                message: "only can be admin, deposit, sales or regular"}
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -14,6 +15,7 @@ class User < ApplicationRecord
 
   devise :omniauthable, omniauth_providers: %i[facebook github]
 
+  before_create :generate_role
   before_create :generate_token
 
   def self.from_omniauth(auth)
@@ -30,6 +32,10 @@ class User < ApplicationRecord
 
   def invalidate_token
     update(token: nil)
+  end
+
+  def generate_role
+    self.role = "regular" unless self.role
   end
 
   def generate_token
