@@ -58,10 +58,10 @@ Rails.application.routes.draw do
           get 'report_freight_sents', action: 'report_ranked_freight_value'
         end
       end
-      resources :shipments, only: [:new, :create, :update] do
+      resources :shipments, only: [:create, :update] do
         get 'search', action: 'search', on: :collection
       end
-      resources :users, only: [:new, :create]
+      resources :users, only: [:create]
     end
     
   end
