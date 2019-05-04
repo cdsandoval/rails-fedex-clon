@@ -98,7 +98,7 @@ RSpec.describe Api::Admin::UsersController, type: :controller do
       request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
       post :create
       expected_response = JSON.parse(response.body)
-      expect(expected_response["errors"]["message"].size).to eq(8)
+      expect(expected_response["errors"]["message"].size).to eq(7)
     end
 
     it 'render json with number of errors equal to all required parameters without value
@@ -107,7 +107,7 @@ RSpec.describe Api::Admin::UsersController, type: :controller do
       post :create, params: { :username => "Prueba1",
                               :format => :json }
       expected_response = JSON.parse(response.body)
-      expect(expected_response["errors"]["message"].size).to eq(7)
+      expect(expected_response["errors"]["message"].size).to eq(6)
     end
 
     it 'render json with number of errors equal to all required parameters without value
@@ -119,7 +119,7 @@ RSpec.describe Api::Admin::UsersController, type: :controller do
                               :email => "adasdasd",
                               :format => :json }
       expected_response = JSON.parse(response.body)
-      expect(expected_response["errors"]["message"].size).to eq(6)
+      expect(expected_response["errors"]["message"].size).to eq(5)
     end
 
     it 'render json with number of errors equal to all required parameters without value
@@ -130,7 +130,7 @@ RSpec.describe Api::Admin::UsersController, type: :controller do
                               :email => "linzeur@gmail.com",
                               :format => :json }
       expected_response = JSON.parse(response.body)
-      expect(expected_response["errors"]["message"].size).to eq(5)
+      expect(expected_response["errors"]["message"].size).to eq(4)
     end
 
     it 'render json with number of errors equal to all required parameters without value
@@ -142,7 +142,7 @@ RSpec.describe Api::Admin::UsersController, type: :controller do
                               :city => "Lima",
                               :format => :json }
       expected_response = JSON.parse(response.body)
-      expect(expected_response["errors"]["message"].size).to eq(4)
+      expect(expected_response["errors"]["message"].size).to eq(3)
     end
 
     it 'render json with number of errors equal to all required parameters without value
@@ -155,7 +155,7 @@ RSpec.describe Api::Admin::UsersController, type: :controller do
                               :country => "Peru",
                               :format => :json }
       expected_response = JSON.parse(response.body)
-      expect(expected_response["errors"]["message"].size).to eq(3)
+      expect(expected_response["errors"]["message"].size).to eq(2)
     end
 
     it 'render json with number of errors equal to all required parameters without value
@@ -169,7 +169,7 @@ RSpec.describe Api::Admin::UsersController, type: :controller do
                               :address => "Los olivos",
                               :format => :json }
       expected_response = JSON.parse(response.body)
-      expect(expected_response["errors"]["message"].size).to eq(2)
+      expect(expected_response["errors"]["message"].size).to eq(1)
     end
     
     it 'render json with number of errors equal to all required parameters without value

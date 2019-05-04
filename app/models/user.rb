@@ -15,6 +15,7 @@ class User < ApplicationRecord
 
   devise :omniauthable, omniauth_providers: %i[facebook github]
 
+  before_validation :prueba
   before_create :generate_role
   before_create :generate_token
 
@@ -32,6 +33,10 @@ class User < ApplicationRecord
 
   def invalidate_token
     update(token: nil)
+  end
+
+  def prueba
+    
   end
 
   def generate_role
