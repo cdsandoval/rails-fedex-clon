@@ -11,7 +11,7 @@ module Admin
     def create
       @shipment = Shipment.new(new_shipment_params)
       if @shipment.save
-        redirect_to shipment_path(@shipment), notice: 'Shipment was successfully created.'
+        redirect_to admin_mark_delivered_path(tracking_id: @shipment.tracking_id), notice: 'Shipment was successfully created.'
       else
         render :new
       end

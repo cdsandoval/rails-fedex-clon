@@ -19,6 +19,10 @@ Rails.application.routes.draw do
   namespace :admin do
     root 'home#index'
     get  'sales', to: 'sales#report'
+    get "sales/report_countries_recipients",to: 'sales#report_top5_countries_recipients'
+    get "sales/report_countries_senders", to: 'sales#report_top5_countries_senders'
+    get "sales/report_packages_sents", to: 'sales#report_top5_packages_sent'
+    get "sales/report_freight_sents", to: 'sales#report_ranked_freight_value'
     get 'mark_delivered', to: 'shipments#delivered'
     resources :shipments, only: [:update, :new, :create]
     resources :users, only: [:new, :create]

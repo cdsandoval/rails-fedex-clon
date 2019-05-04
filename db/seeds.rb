@@ -25,13 +25,13 @@ end
 end
 5.times do
   Shipment.create(
-    tracking_id: Faker::Alphanumeric.alphanumeric(10),
+    tracking_id: Faker::Alphanumeric.alphanumeric(20),
     origin_address: Faker::Address.full_address, 
     destination_address: Faker::Address.full_address, 
     weight: Faker::Number.between(1, 10),
     reception_date: Faker::Date.forward(60),
     estimated_delivery_date: Faker::Date.forward(60),
-    freight_value: Faker::Number.between(20 ,100),
+    freight_value: Faker::Number.between(500,10000),
     user_id: User.all.reduce([]){ |array, val| array << val.id }.sample,
     sender_id: Sender.all.reduce([]){ |array, val| array << val.id }.sample
   )
@@ -113,7 +113,7 @@ Shipment.create(
   weight: 100,
   reception_date: Faker::Date.forward(60),
   estimated_delivery_date: Faker::Date.forward(60),
-  freight_value: 200,
+  freight_value: 3000,
   user_id: usermailer.id,
   sender_id: sendermailer.id
 )

@@ -10,13 +10,14 @@ class Shipment < ApplicationRecord
 
   def validate_stored?(user)
     history = self.shipment_locations.last
-    history &&
+    self.delivered_date.present? ||
+    (history &&
     history.city == user.city &&
-    history.country == user.country
+    history.country == user.country)
   end
 
   def generate_tracking_id
-    self.tracking_id = "T#{DateTime.now.to_i}"
+    self.tracking_id = "T#{DateTime.now.to_i}" unless self.tracking_id
   end
 
 end

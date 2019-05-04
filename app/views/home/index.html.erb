@@ -1,6 +1,11 @@
-<h1>Welcome to FedEx Clone</h1>
+<center><p>
+<h1>Welcome to FedEx Clone</h1> 
+</p>
+<p>
 <h2>Find your shipment</h2>
+</p>
 <%= form_tag(search_shipments_path, {:method => "get"}) do %>
  <%= text_field_tag 'tracking_id' %>
  <%= submit_tag 'Search' %>
 <% end %>
+</center>

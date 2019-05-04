@@ -3,10 +3,6 @@ module Admin
 
     before_action :authorization_admin
 
-    def index
-      @users = User.where.not(:id => current_user.id)
-    end
-
     def new
       @user = User.new
     end
