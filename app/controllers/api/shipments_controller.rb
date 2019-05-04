@@ -1,9 +1,5 @@
 class Api::ShipmentsController < ApiController
 
-  def index
-    
-  end
-
   def search
     if params[:tracking_id]
       shipment = Shipment.find_by(tracking_id: params[:tracking_id])
