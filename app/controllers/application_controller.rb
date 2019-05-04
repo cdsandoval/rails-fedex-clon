@@ -9,12 +9,12 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def after_sign_in_path_for(current_user)
-    if current_user.admin? 
+    if current_user.admin?
       return admin_root_path
     elsif current_user.deposit?
       return deposit_root_path
     elsif current_user.sales?
-      return admin_sales_path
+      return admin_sales_root_path
     else
       return root_path
     end

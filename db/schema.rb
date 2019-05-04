@@ -69,7 +69,7 @@ ActiveRecord::Schema.define(version: 2019_05_03_030335) do
     t.string "city", default: "", null: false
     t.string "country", default: "", null: false
     t.string "address", default: "", null: false
-    t.string "role", default: "", null: false
+    t.string "role", default: "regular", null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
