@@ -29,14 +29,13 @@ module Admin
     end
 
     def update
-      
-      shipment = Shipment.find(params[:id])
-      if shipment.update(shipment_params)
-        ShipmentMailer.with(shipment: shipment).shipment_delivered.deliver_now
+      @shipment = Shipment.find(params[:id])
+      p @shipment.inspect
+      if @shipment.update(shipment_params)
+        ShipmentMailer.with(shipment: @shipment).shipment_delivered.deliver_now
         flash[:notice] = "Shipment marked as delivered successfuly"
         redirect_to(admin_root_path)
       else
-        flash[:notice] = "The shipment doesn't exist"
         render :delivered
       end
     end
