@@ -2,11 +2,11 @@
 
 <%= link_to "Add new shipment", new_admin_shipment_path %>
 <%= link_to "Add new user", new_admin_user_path %>
-<%= link_to "Go to Sales Reports", admin_sales_path %>
+<%= link_to "Go to Sales Reports", admin_sales_root_path %>
 <%= link_to "Go to Deposit panel", deposit_root_path %>
 <h2>Find a shipment to mark as delivered</h2>
 
-<%= form_tag(search_admin_shipments_path, {:method => "get"}) do %>
- <%= text_field_tag 'tracking_id' %>
- <%= submit_tag 'Search' %>
+<%= form_tag(admin_mark_delivered_path, {:method => "get"}) do %>
+  <%= text_field_tag 'tracking_id' %>
+  <%= submit_tag 'Search' %>
 <% end %>
