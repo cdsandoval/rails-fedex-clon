@@ -28,9 +28,12 @@ class Api::Admin::ShipmentsController < ApiController
     authorize User, policy_class: AdminPolicy
     shipment = Shipment.find(params[:id])
     if params[:delivered_date]
-      shipment.update(shipment_params)
-      ShipmentMailer.with(shipment: shipment).shipment_delivered.deliver_now
-      render json: shipment, status: 200
+      if shipment.update(shipment_params)
+        ShipmentMailer.with(shipment: shipment).shipment_delivered.deliver_now
+        render json: shipment, status: 200
+      else
+        render_error_message("delivered_date must be greater or equal to reception_date", 400)
+      end
     else
       render_error_message("You have to pass the argument 'delivered_date'", 400)
     end

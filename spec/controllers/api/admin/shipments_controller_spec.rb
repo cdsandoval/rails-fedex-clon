@@ -442,8 +442,6 @@ RSpec.describe Api::Admin::ShipmentsController, type: :controller do
       expect(expected_response["errors"]["message"]).to eq("It doesn't exist a shipment with that id")
     end
 
-
-
     it 'returns http status bad request
         when you pass token but you do not pass parameter delivered_date' do
       request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
@@ -459,18 +457,33 @@ RSpec.describe Api::Admin::ShipmentsController, type: :controller do
       expect(expected_response["errors"]["message"]).to eq("You have to pass the argument 'delivered_date'")
     end
 
+    it 'returns http status bad request
+        when you pass token but you pass parameter delivered_date with a date less than reception_date\'s value' do
+      request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
+      put :update, params: { id: @shipment1.id, delivered_date: "2013-01-01" }
+      expect(response).to have_http_status(:bad_request)
+    end
+
+    it 'returns json with a specify error message
+        when you pass token but you do not pass parameter delivered_date' do
+      request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
+      put :update, params: { id: @shipment1.id, delivered_date: "2013-01-01" }
+      expected_response = JSON.parse(response.body)
+      expect(expected_response["errors"]["message"]).to eq("delivered_date must be greater or equal to reception_date")
+    end
+
     it 'returns http status ok' do
       request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
-      put :update, params: { id: @shipment1.id, delivered_date: "25/07/2019"}
+      put :update, params: { id: @shipment1.id, delivered_date: "25/08/2019"}
       expect(response).to have_http_status(:ok)
     end
 
     it 'render json with general attributes
         when you pass a tracking_id but it does not belong you' do
       request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
-      put :update, params: { id: "sadasdas"}
+      put :update, params: { id: @shipment1.id, delivered_date: "25/08/2019"}
       expected_response = JSON.parse(response.body)
-      expect(expected_response.keys).not_to include("recipient")
+      expect(expected_response["delivered_date"]).to eq("2019-08-25")
     end
   end
 
