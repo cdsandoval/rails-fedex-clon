@@ -1,13 +1,15 @@
-<h1>Mark shipment as delivered</h1>
-
-<%= form_for [:admin, @shipment] do |f| %>
-  <p>
-    <%= f.label :delivered_date %><br />
-    <%= f.text_field :delivered_date %>
-  </p>
-  <p>
-    <%= f.submit "Mark as Delivered"%>
-  </p>
-<% end %>
+<h1>Shipment details</h1>
+<ul>
+  <% @shipment.errors.full_messages.each do |error| %>
+    <li><%= error %></li>
+  <% end %>
+</ul>
 
 <%= render partial: "_partials/shipment" %>
+
+<h2>Mark shipment as delivered</h2>
+<%= form_for [:admin, @shipment] do |f| %>
+    <%= f.label :delivered_date %><br />
+    <%= f.date_field :delivered_date, value: Time.now.strftime("%Y-%m-%d") %>
+    <%= f.submit "Mark as Delivered"%>
+<% end %>

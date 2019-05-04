@@ -5,6 +5,7 @@ class Shipment < ApplicationRecord
 
   validates :origin_address, :destination_address, presence: true
   validates :weight, :freight_value, numericality: { greater_than: 0 }
+  validate :delivered_date_after_reception_date, on: :update
 
   before_create :generate_tracking_id
 
@@ -18,6 +19,12 @@ class Shipment < ApplicationRecord
 
   def generate_tracking_id
     self.tracking_id = "T#{DateTime.now.to_i}" unless self.tracking_id
+  end
+
+  private
+  def delivered_date_after_reception_date
+    errors.add(:delivered_date, "must be greater or equal to reception_date") if
+      !delivered_date.blank? and delivered_date < reception_date
   end
 
 end
