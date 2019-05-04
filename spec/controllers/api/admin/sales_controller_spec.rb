@@ -118,13 +118,6 @@ RSpec.describe Api::Admin::SalesController, type: :controller do
       get :report_top5_countries_recipients
       expect(response).to have_http_status(:ok)
     end
-
-    it 'render json with number of elements equal to 5' do
-      request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
-      get :report_top5_countries_recipients
-      expected_response = JSON.parse(response.body)
-      expect(expected_response.size).to eq(5)
-    end
   end
 
   describe 'GET report_top5_countries_senders' do
@@ -160,13 +153,6 @@ RSpec.describe Api::Admin::SalesController, type: :controller do
       request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
       get :report_top5_countries_senders
       expect(response).to have_http_status(:ok)
-    end
-
-    it 'render json with number of elements equal to 5' do
-      request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
-      get :report_top5_countries_senders
-      expected_response = JSON.parse(response.body)
-      expect(expected_response.size).to eq(5)
     end
   end
 
