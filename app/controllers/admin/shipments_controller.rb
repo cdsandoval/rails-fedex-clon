@@ -1,5 +1,5 @@
 module Admin
-  
+
   class ShipmentsController < ApplicationController
 
     def delivered
@@ -36,12 +36,12 @@ module Admin
         flash[:notice] = "Shipment marked as delivered successfuly"
         redirect_to(admin_root_path)
       else
-        render :delivered
+        render :search
       end
     end
 
     private
-    
+
     def shipment_params
       params.require(:shipment).permit(:delivered_date)
     end
@@ -52,7 +52,7 @@ module Admin
 
     rescue_from(ActiveRecord::RecordNotFound) do |_record_not_found|
       flash[:notice] = "The shipment doesn't exist"
-      render :delivered
+      render :search
     end
 
   end

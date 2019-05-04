@@ -15,7 +15,7 @@ module Admin
       authorize User, policy_class: AdminPolicy
       @user = User.new(user_params)
       if @user.save
-        flash[:notice] = "Created User successfully" 
+        flash[:notice] = "Created User successfully"
         redirect_to admin_root_path
       else
         render :action => 'new'
@@ -25,7 +25,7 @@ module Admin
     private
 
     def user_params
-      params.require(:user).permit(:username, :email, :password, :city, :country, :role)
+      params.require(:user).permit(:username, :email, :password, :city, :country, :role, :address)
     end
 
   end
