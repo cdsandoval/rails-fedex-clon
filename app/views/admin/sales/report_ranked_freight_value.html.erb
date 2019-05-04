@@ -1,7 +1,13 @@
-<h1>top senders by freight value</h1>
+<h1>Top senders by freight value</h1>
 
-<ul>
-  <% @senders.each do |sender| %>
-    <li><%= sender.store_name %></li> 
-  <% end %>
-</ul>
+<table border="1" style="border-collapse: collapse">
+    <th colspan="1" style="text-align: left">Store name</th>
+    <th colspan="1" style="text-align: left">Email</th>
+
+    <% @senders.each do |sender| %>
+        <tr>
+          <td> <%= sender.store_name %></td>
+          <td> <%= sender.email %></td>
+        </tr>
+  <% end %> 
+</table>

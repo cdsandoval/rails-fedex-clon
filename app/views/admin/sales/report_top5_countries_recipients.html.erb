@@ -1,7 +1,13 @@
 <h1>Top 5 Recipients Countries </h1>
 
-<ul>
-  <% @shipments.each do |shipment| %>
-    <li><%= shipment.user.country %></li>
-  <% end %>
-</ul>
+<table border="1" style="border-collapse: collapse">
+    <th colspan="1" style="text-align: left">Country</th>
+    <th colspan="1" style="text-align: left">Username</th>
+
+    <% @shipments.each do |shipment| %>
+        <tr>
+          <td> <%= shipment.user.country%></td>
+          <td> <%= shipment.user.username%></td>
+        </tr>
+  <% end %> 
+</table>

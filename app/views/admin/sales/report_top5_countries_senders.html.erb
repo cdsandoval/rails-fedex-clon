@@ -1,7 +1,13 @@
 <h1>Top 5 Senders Countries </h1>
 
-<ul>
-  <% @shipments.each do |shipment| %>
-    <li><%= shipment.sender.country %> 
-  <% end %>
-</ul>
+<table border="1" style="border-collapse: collapse">
+    <th colspan="1" style="text-align: left">Store Name</th>
+    <th colspan="1" style="text-align: left">Country</th>
+
+    <% @shipments.each do |shipment| %>
+        <tr>
+          <td> <%= shipment.sender.store_name%></td>
+          <td> <%= shipment.sender.country %></td>
+        </tr>
+  <% end %> 
+</table>
