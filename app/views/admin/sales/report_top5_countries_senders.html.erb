@@ -1,7 +1,24 @@
 <h1>Top 5 Senders Countries </h1>
 
-<ul>
-  <% @shipments.each do |shipment| %>
-    <li><%= shipment.sender.country %> 
-  <% end %>
-</ul>
+<% if @shipments%>
+    <table border="1" style="border-collapse: collapse">
+    <thead>
+      <tr>
+        <th>Country</th>
+        <th>Total Sent</th>
+      </tr>
+    </thead>
+  <tbody>
+  <% @shipments.each do |key, value| %>
+      <tr>
+      <td><%= key.to_s %></td>
+      <td><%= value.to_s %></td>
+      </tr>
+    <% end %>
+  </tbody>
+  </table>
+<%else%>
+    <p><span style="color: #ff0000;">No data to show</span></p>
+<% end %>
+
+<%= link_to 'back', admin_sales_path %> 

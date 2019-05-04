@@ -1,17 +1,18 @@
 class ReportsQueries
   def senders_countries
-    Shipment.joins(:sender).group('shipments.id, senders.country').order('count(senders.country) DESC').limit(5)
+    Sender.joins(:shipments).group(:country).count.sort_by {|_key, value| value }.reverse.first(5).to_h
   end
 
   def recipients_countries
-    Shipment.joins(:user).group('shipments.id, users.country').order('count(users.country) DESC').limit(5)
+    User.joins("INNER JOIN shipments ON users.id = shipments.user_id").select("users.country, count(*) as TOTAL").group(:country).order("TOTAL DESC").limit(5)
   end
 
   def ranked_packages_sent
-    Sender.joins(:shipments).group('senders.id').order('count(shipments.id) DESC')
+    Sender.joins(:shipments).group(:email).count("shipments.id").sort_by {|_key, value| value}.reverse.first(5).to_h
   end
 
   def ranked_freight_value
-    Sender.joins(:shipments).group('senders.id').order('sum(shipments.freight_value) DESC').having('sum(shipments.freight_value) > 1000')
+    top_sender = Sender.joins(:shipments).group(:email).sum("shipments.freight_value")
+    top_sender.each{|k,v| top_sender.delete(k) if v < 1000}.sort_by {|_key, value| value}.reverse
   end
 end
