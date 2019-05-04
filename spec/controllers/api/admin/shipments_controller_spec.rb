@@ -10,7 +10,7 @@ RSpec.describe Api::Admin::ShipmentsController, type: :controller do
 
     Sender.create(
       store_name: Faker::Commerce.department,
-      email: Faker::Internet.email,
+      email: "diegotc86@gmail.com",
       order_id: 123
     )
     @user1 = User.create(
@@ -139,7 +139,7 @@ RSpec.describe Api::Admin::ShipmentsController, type: :controller do
     end
 
     it 'returns http status bad request
-        when you pass token but you do not pass parameter tracking_id' do
+        when you pass token but you do not pass none of parameters' do
       request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
       post :create
       expect(response).to have_http_status(:bad_request)
@@ -352,7 +352,7 @@ RSpec.describe Api::Admin::ShipmentsController, type: :controller do
       expect(response).to have_http_status(:created)
     end
 
-    it 'returns http status created
+    it 'render json will all attributes\' value equals to parameters sended
         when you pass token and  all parameters and all have correct values' do
       request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
       post :create, params: { :origin_address => "Lurin 345",
@@ -373,6 +373,82 @@ RSpec.describe Api::Admin::ShipmentsController, type: :controller do
       expect(expected_response["freight_value"]).to eq(365)
       expect(expected_response["user_id"]).to eq(@user2.id)
       expect(expected_response["sender_id"]).to eq(Sender.all.first.id)
+    end
+  end
+
+  describe 'PUT update' do
+    it 'returns http status unathorized
+        when you do not pass the token in header' do
+      put :update, params: { id: "sadasdas"}
+      expect(response).to have_http_status(:unauthorized)
+    end
+
+    it 'render json with a specify error message
+        when you do not pass the token in header' do
+      put :update, params: { id: "sadasdas"}
+      expected_response = JSON.parse(response.body)
+      expect(expected_response["errors"]["message"]).to eq("Access denied")
+    end
+
+    it 'returns http status unathorized
+        when you pass the token of a user with role regular' do
+      request.headers['Authorization'] = "Token token=#{@user2.authentication_token}"
+      put :update, params: { id: "sadasdas"}
+      expect(response).to have_http_status(:unauthorized)
+    end
+
+    it 'render json with a specify error message
+        when you pass the token of a user with role regular' do
+      request.headers['Authorization'] = "Token token=#{@user2.authentication_token}"
+      put :update, params: { id: "sadasdas"}
+      expected_response = JSON.parse(response.body)
+      expect(expected_response["errors"]["message"]).to eq("Access denied")
+    end
+
+    it 'returns http status not found
+        when you pass token and id but the last one does not exist' do
+      request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
+      put :update, params: { id: "sadasdas"}
+      expect(response).to have_http_status(:not_found)
+    end
+
+    it 'render json with a specify error message
+        when you pass token and id but the last one does not exist' do
+      request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
+      put :update, params: { id: "sadasdas"}
+      expected_response = JSON.parse(response.body)
+      expect(expected_response["errors"]["message"]).to eq("It doesn't exist a shipment with that id")
+    end
+
+
+
+    it 'returns http status bad request
+        when you pass token but you do not pass parameter delivered_date' do
+      request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
+      put :update, params: { id: @shipment1.id}
+      expect(response).to have_http_status(:bad_request)
+    end
+
+    it 'returns json with a specify error message
+        when you pass token but you do not pass parameter delivered_date' do
+      request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
+      put :update, params: { id: @shipment1.id}
+      expected_response = JSON.parse(response.body)
+      expect(expected_response["errors"]["message"]).to eq("You have to pass the argument 'delivered_date'")
+    end
+
+    it 'returns http status ok' do
+      request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
+      put :update, params: { id: @shipment1.id, delivered_date: "25/07/2019"}
+      expect(response).to have_http_status(:ok)
+    end
+
+    it 'render json with general attributes
+        when you pass a tracking_id but it does not belong you' do
+      request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
+      put :update, params: { id: "sadasdas"}
+      expected_response = JSON.parse(response.body)
+      expect(expected_response.keys).not_to include("recipient")
     end
   end
 

@@ -26,31 +26,28 @@ class Api::Admin::ShipmentsController < ApiController
 
   def update
     authorize User, policy_class: AdminPolicy
-    if params[:id]
-      shipment = Shipment.find(params[:id])
-      if shipment.update(shipment_params)
-        ShipmentMailer.with(shipment: shipment).shipment_delivered.deliver_now
-        render_error_message("Shipment was marked as delivered successfuly", 200)
-      else
-        render_error_message("It doesn't exist a shipment with that id", 404)
-      end
+    shipment = Shipment.find(params[:id])
+    if params[:delivered_date]
+      shipment.update(shipment_params)
+      ShipmentMailer.with(shipment: shipment).shipment_delivered.deliver_now
+      render json: shipment, status: 200
     else
-      render_error_message("You have to pass the argument 'id'", 400)
+      render_error_message("You have to pass the argument 'delivered_date'", 400)
     end
   end
 
   private
     
   def shipment_params
-    params.require(:shipment).permit(:delivered_date)
+    params.permit(:delivered_date)
   end
 
   def new_shipment_params
     params.permit(:origin_address, :destination_address, :weight, :reception_date, :estimated_delivery_date, :freight_value, :user_id, :sender_id)
   end
-  
-  # rescue_from(ActionController::ParameterMissing) do |parameter_missing_exception|
-  #   render_error_message("Required parameter missing: #{parameter_missing_exception.param}", 400)
-  # end
+
+  rescue_from(ActiveRecord::RecordNotFound) do |_record_not_found|
+    render_error_message("It doesn't exist a shipment with that id", 404)
+  end
   
 end

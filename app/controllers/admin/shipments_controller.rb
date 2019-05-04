@@ -48,13 +48,11 @@ module Admin
 
     def new_shipment_params
       params.require(:shipment).permit(:origin_address, :destination_address, :weight, :reception_date, :estimated_delivery_date, :freight_value, :user_id, :sender_id)
-<<<<<<< HEAD
     end
 
-    def authorization_admin
-      authorize User, :new?, policy_class: AdminPolicy
-=======
->>>>>>> Add more rspec for api admin
+    rescue_from(ActiveRecord::RecordNotFound) do |_record_not_found|
+      flash[:notice] = "The shipment doesn't exist"
+      render :delivered
     end
 
   end

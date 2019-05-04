@@ -52,7 +52,7 @@ Rails.application.routes.draw do
       resources :shipments, only: [:new, :create, :update] do
         get 'search', action: 'search', on: :collection
       end
-      resources :users, only: [:new, :create]
+      resources :users, only: :create
     end
     
   end
