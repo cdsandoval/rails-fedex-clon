@@ -35,12 +35,12 @@ Rails.application.routes.draw do
   namespace :api do
     get '/login', to: 'sessions#create'
 
-    resources :shipments, only: [:index] do
+    resources :shipments, except: [:index, :show, :new, :create, :edit, :update, :destroy] do
       get 'search', action: 'search', on: :collection
     end
 
     namespace :deposit do
-      resources :shipments, only: [:index] do
+      resources :shipments, except: [:index, :show, :new, :create, :edit, :update, :destroy] do
         get 'search', action: 'search', on: :collection
       end
 

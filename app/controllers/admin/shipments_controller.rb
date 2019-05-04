@@ -3,7 +3,7 @@ module Admin
   class ShipmentsController < ApplicationController
 
     def delivered
-      authorize User, policy_class: AdminPolicy
+      authorize User, :search?, policy_class: AdminPolicy
       @shipment = Shipment.find_by_tracking_id(params[:tracking_id])
 
       unless @shipment
