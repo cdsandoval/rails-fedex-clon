@@ -8,8 +8,6 @@ class User < ApplicationRecord
   validates :role, inclusion: { in: [ "admin", "deposit", "sales", "regular" ],
                                 message: "only can be admin, deposit, sales or regular"}
 
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
