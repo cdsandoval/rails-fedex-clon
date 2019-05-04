@@ -64,6 +64,28 @@ RSpec.describe Api::Admin::ShipmentsController, type: :controller do
       expect(response).to have_http_status(:unauthorized)
     end
 
+    it 'render json with a specify error message
+        when you do not pass the token in header' do
+      get :search
+      expected_response = JSON.parse(response.body)
+      expect(expected_response["errors"]["message"]).to eq("Access denied")
+    end
+
+    it 'returns http status unathorized
+        when you pass the token of a user with role regular' do
+      request.headers['Authorization'] = "Token token=#{@user2.authentication_token}"
+      get :search
+      expect(response).to have_http_status(:unauthorized)
+    end
+
+    it 'render json with a specify error message
+        when you pass the token of a user with role regular' do
+      request.headers['Authorization'] = "Token token=#{@user2.authentication_token}"
+      get :search
+      expected_response = JSON.parse(response.body)
+      expect(expected_response["errors"]["message"]).to eq("Access denied")
+    end
+
     it 'returns http status bad request
         when you pass token but you do not pass parameter tracking_id' do
       request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"

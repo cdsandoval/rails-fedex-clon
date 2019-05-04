@@ -18,15 +18,17 @@ Rails.application.routes.draw do
 
   namespace :admin do
     root 'home#index'
-    get  'sales', to: 'sales#report'
-    get "sales/report_countries_recipients",to: 'sales#report_top5_countries_recipients'
-    get "sales/report_countries_senders", to: 'sales#report_top5_countries_senders'
-    get "sales/report_packages_sents", to: 'sales#report_top5_packages_sent'
-    get "sales/report_freight_sents", to: 'sales#report_ranked_freight_value'
-    get 'mark_delivered', to: 'shipments#delivered'
-    resources :shipments, only: [:new, :create, :update] do
-      get 'search', action: 'search', on: :collection
+    resources :sales, except: [:index, :show, :new, :create, :edit, :update, :destroy] do
+      root action: "report"
+      collection do
+        get 'report_countries_recipients', action: 'report_top5_countries_recipients'
+        get 'report_countries_senders', action: 'report_top5_countries_senders'
+        get 'report_packages_sents', action: 'report_top5_packages_sent'
+        get 'report_freight_sents', action: 'report_ranked_freight_value'
+      end
     end
+    get 'mark_delivered', to: 'shipments#delivered'
+    resources :shipments, only: [:update, :new, :create]
     resources :users, only: [:new, :create]
   end
 
@@ -48,11 +50,18 @@ Rails.application.routes.draw do
     end
 
     namespace :admin do
-      get  'sales', to: 'sales#report'
+      resources :sales, except: [:index, :show, :new, :create, :edit, :update, :destroy] do
+        collection do
+          get 'report_countries_recipients', action: 'report_top5_countries_recipients'
+          get 'report_countries_senders', action: 'report_top5_countries_senders'
+          get 'report_packages_sents', action: 'report_top5_packages_sent'
+          get 'report_freight_sents', action: 'report_ranked_freight_value'
+        end
+      end
       resources :shipments, only: [:new, :create, :update] do
         get 'search', action: 'search', on: :collection
       end
-      resources :users, only: :create
+      resources :users, only: [:new, :create]
     end
     
   end
