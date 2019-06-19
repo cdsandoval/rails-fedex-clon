@@ -52,3 +52,5 @@ FedEx Clone is a evaluations project of Codeable build with Rails and love. The 
 | PATCH | /api/admin/shipments/:id                     | Update a shipment                                                  |
 | PUT   | /api/admin/shipments/:id                     | Update a shipment                                                  |
 | POST  | /api/admin/users                             | Create a user                                                      |
+
+
