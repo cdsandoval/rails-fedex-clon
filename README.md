@@ -1,6 +1,8 @@
 # Rails FedEx Clone
 
-FedEx Clone is a evaluations project of Codeable build with Rails and love. The requirements and scope of the project are [here](https://github.com/codeableorg/rails-fedex-clon/blob/master/requirements.md).
+FedEx Clone is a evaluations project of Codeable build with Rails and love. The requirements and scope of the project are [here](https://github.com/codeableorg/rails-fedex-clon/blob/master/requirements.md). 
+
+Deploy in [Heroku](https://codeable-rails-fedex-clon.herokuapp.com/)
 
 ## Team
 
