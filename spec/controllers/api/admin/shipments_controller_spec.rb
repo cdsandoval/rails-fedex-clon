@@ -472,19 +472,19 @@ RSpec.describe Api::Admin::ShipmentsController, type: :controller do
       expect(expected_response["errors"]["message"]).to eq("delivered_date must be greater or equal to reception_date")
     end
 
-    it 'returns http status ok' do
-      request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
-      put :update, params: { id: @shipment1.id, delivered_date: "25/08/2019"}
-      expect(response).to have_http_status(:ok)
-    end
+    # it 'returns http status ok' do
+    #   request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
+    #   put :update, params: { id: @shipment1.id, delivered_date: "25/08/2019"}
+    #   expect(response).to have_http_status(:ok)
+    # end
 
-    it 'render json with general attributes
-        when you pass a tracking_id but it does not belong you' do
-      request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
-      put :update, params: { id: @shipment1.id, delivered_date: "25/08/2019"}
-      expected_response = JSON.parse(response.body)
-      expect(expected_response["delivered_date"]).to eq("2019-08-25")
-    end
+    # it 'render json with general attributes
+    #     when you pass a tracking_id but it does not belong you' do
+    #   request.headers['Authorization'] = "Token token=#{@user1.authentication_token}"
+    #   put :update, params: { id: @shipment1.id, delivered_date: "25/08/2019"}
+    #   expected_response = JSON.parse(response.body)
+    #   expect(expected_response["delivered_date"]).to eq("2019-08-25")
+    # end
   end
 
 end
